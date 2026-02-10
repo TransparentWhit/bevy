@@ -179,6 +179,10 @@ impl AssetReader for FileAssetReader {
 }
 
 impl AssetWriter for FileAssetWriter {
+    fn root_path(&self) -> Cow<'_, PathBuf> {
+        Cow::Borrowed(&self.root_path)
+    }
+
     async fn write<'a>(&'a self, path: &'a Path) -> Result<Box<Writer>, AssetWriterError> {
         let full_path = self.root_path.join(path);
         if let Some(parent) = full_path.parent() {

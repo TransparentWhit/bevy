@@ -451,6 +451,10 @@ impl AsyncWrite for DataWriter {
 }
 
 impl AssetWriter for MemoryAssetWriter {
+    fn root_path(&self) -> Cow<'_, PathBuf> {
+        Cow::Owned(self.root.path())
+    }
+
     async fn write<'a>(&'a self, path: &'a Path) -> Result<Box<super::Writer>, AssetWriterError> {
         Ok(Box::new(DataWriter {
             dir: self.root.clone(),

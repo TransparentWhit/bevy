@@ -336,6 +336,8 @@ pub enum AssetWriterError {
 ///
 /// For a complementary version of this trait that can read assets from storage, see [`AssetReader`].
 pub trait AssetWriter: Send + Sync + 'static {
+    /// Returns the root directory where assets are written to.
+    fn root_path(&self) -> Cow<'_, PathBuf>;
     /// Writes the full asset bytes at the provided path.
     fn write<'a>(
         &'a self,
@@ -424,6 +426,8 @@ pub trait AssetWriter: Send + Sync + 'static {
 /// Equivalent to an [`AssetWriter`] but using boxed futures, necessary eg. when using a `dyn AssetWriter`,
 /// as [`AssetWriter`] isn't currently object safe.
 pub trait ErasedAssetWriter: Send + Sync + 'static {
+    /// Returns the root directory where assets are written to.
+    fn root_path(&self) -> Cow<'_, PathBuf>;
     /// Writes the full asset bytes at the provided path.
     fn write<'a>(
         &'a self,
@@ -490,6 +494,9 @@ pub trait ErasedAssetWriter: Send + Sync + 'static {
 }
 
 impl<T: AssetWriter> ErasedAssetWriter for T {
+    fn root_path(&self) -> Cow<'_, PathBuf> {
+        Self::root_path(self)
+    }
     fn write<'a>(
         &'a self,
         path: &'a Path,
