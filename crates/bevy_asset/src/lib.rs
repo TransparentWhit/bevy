@@ -741,7 +741,10 @@ mod tests {
     use core::{any::TypeId, time::Duration};
     use futures_lite::AsyncReadExt;
     use serde::{Deserialize, Serialize};
-    use std::path::{Path, PathBuf};
+    use std::{
+        borrow::Cow,
+        path::{Path, PathBuf},
+    };
     use thiserror::Error;
 
     #[derive(Asset, TypePath, Debug, Default)]
@@ -851,6 +854,9 @@ mod tests {
     }
 
     impl AssetReader for UnstableMemoryAssetReader {
+        fn root_path(&self) -> Cow<'_, PathBuf> {
+            self.memory_reader.root_path()
+        }
         async fn is_directory<'a>(&'a self, path: &'a Path) -> Result<bool, AssetReaderError> {
             self.memory_reader.is_directory(path).await
         }

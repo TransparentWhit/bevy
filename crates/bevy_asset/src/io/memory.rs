@@ -11,6 +11,7 @@ use core::{pin::Pin, task::Poll};
 use futures_io::{AsyncRead, AsyncWrite};
 use futures_lite::Stream;
 use std::{
+    borrow::Cow,
     io::{Error, ErrorKind, SeekFrom},
     path::{Path, PathBuf},
 };
@@ -361,6 +362,10 @@ impl Reader for DataReader {
 }
 
 impl AssetReader for MemoryAssetReader {
+    fn root_path(&self) -> Cow<'_, PathBuf> {
+        Cow::Owned(self.root.path())
+    }
+
     async fn read<'a>(&'a self, path: &'a Path) -> Result<impl Reader + 'a, AssetReaderError> {
         self.root
             .get_asset(path)

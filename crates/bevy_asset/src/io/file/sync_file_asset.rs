@@ -9,6 +9,7 @@ use crate::io::{
 use alloc::{borrow::ToOwned, boxed::Box, vec::Vec};
 use core::{pin::Pin, task::Poll};
 use std::{
+    borrow::Cow,
     fs::{read_dir, File},
     io::{Read, Seek, SeekFrom, Write},
     path::{Path, PathBuf},
@@ -99,6 +100,10 @@ impl Stream for DirReader {
 }
 
 impl AssetReader for FileAssetReader {
+    fn root_path(&self) -> Cow<'_, PathBuf> {
+        Cow::Borrowed(&self.root_path)
+    }
+
     async fn read<'a>(&'a self, path: &'a Path) -> Result<impl Reader + 'a, AssetReaderError> {
         let full_path = self.root_path.join(path);
         match File::open(&full_path) {

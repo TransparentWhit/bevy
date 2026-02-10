@@ -3,7 +3,10 @@ use crate::{AssetApp, AssetPlugin};
 use alloc::boxed::Box;
 use bevy_app::{App, Plugin};
 use bevy_tasks::ConditionalSendFuture;
-use std::path::{Path, PathBuf};
+use std::{
+    borrow::Cow,
+    path::{Path, PathBuf},
+};
 use tracing::warn;
 
 /// Adds the `http` and `https` asset sources to the app.
@@ -188,6 +191,13 @@ async fn get(path: PathBuf) -> Result<Box<dyn Reader>, AssetReaderError> {
 }
 
 impl AssetReader for WebAssetReader {
+    fn root_path(&self) -> Cow<PathBuf> {
+        Cow::Owned(PathBuf::from(match self {
+            Self::Http => "http://",
+            Self::Https => "https://",
+        }))
+    }
+
     fn read<'a>(
         &'a self,
         path: &'a Path,

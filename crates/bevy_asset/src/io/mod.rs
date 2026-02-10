@@ -35,6 +35,7 @@ use core::{
 use futures_io::{AsyncRead, AsyncSeek, AsyncWrite};
 use futures_lite::Stream;
 use std::{
+    borrow::Cow,
     io::SeekFrom,
     path::{Path, PathBuf},
 };
@@ -188,6 +189,8 @@ where
 ///
 /// For a complementary version of this trait that can write assets to storage, see [`AssetWriter`].
 pub trait AssetReader: Send + Sync + 'static {
+    /// Returns the root directory where assets are loaded from.
+    fn root_path(&self) -> Cow<'_, PathBuf>;
     /// Returns a future to load the full file data at the provided path.
     ///
     /// # Note for implementors
@@ -240,6 +243,8 @@ pub trait AssetReader: Send + Sync + 'static {
 /// Equivalent to an [`AssetReader`] but using boxed futures, necessary eg. when using a `dyn AssetReader`,
 /// as [`AssetReader`] isn't currently object safe.
 pub trait ErasedAssetReader: Send + Sync + 'static {
+    /// Returns the root directory where assets are loaded from.
+    fn root_path(&self) -> Cow<'_, PathBuf>;
     /// Returns a future to load the full file data at the provided path.
     fn read<'a>(
         &'a self,
@@ -269,6 +274,9 @@ pub trait ErasedAssetReader: Send + Sync + 'static {
 }
 
 impl<T: AssetReader> ErasedAssetReader for T {
+    fn root_path(&self) -> Cow<'_, PathBuf> {
+        Self::root_path(self)
+    }
     fn read<'a>(
         &'a self,
         path: &'a Path,

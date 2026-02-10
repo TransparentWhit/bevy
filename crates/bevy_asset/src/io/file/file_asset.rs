@@ -16,7 +16,10 @@ use core::marker::PhantomData;
 use core::time::Duration;
 #[cfg(not(target_os = "windows"))]
 use futures_util::{future, pin_mut};
-use std::path::Path;
+use std::{
+    borrow::Cow,
+    path::{Path, PathBuf},
+};
 
 use super::{FileAssetReader, FileAssetWriter};
 
@@ -72,6 +75,10 @@ impl<'a> Reader for GuardedFile<'a> {
 }
 
 impl AssetReader for FileAssetReader {
+    fn root_path(&self) -> Cow<'_, PathBuf> {
+        Cow::Borrowed(&self.root_path)
+    }
+
     async fn read<'a>(&'a self, path: &'a Path) -> Result<impl Reader + 'a, AssetReaderError> {
         #[cfg(not(target_os = "windows"))]
         let _guard = maybe_get_semaphore().await;
