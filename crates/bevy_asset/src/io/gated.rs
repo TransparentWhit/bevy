@@ -1,9 +1,8 @@
 use crate::io::{AssetReader, AssetReaderError, PathStream, Reader};
-use alloc::{boxed::Box, sync::Arc};
+use alloc::{borrow::Cow, boxed::Box, sync::Arc};
 use async_channel::{Receiver, Sender};
 use bevy_platform::{collections::HashMap, sync::RwLock};
 use std::{
-    borrow::Cow,
     path::{Path, PathBuf},
     sync::PoisonError,
 };

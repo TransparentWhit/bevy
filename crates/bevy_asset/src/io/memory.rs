@@ -2,7 +2,13 @@ use crate::io::{
     AssetReader, AssetReaderError, AssetWriter, AssetWriterError, PathStream, Reader,
     ReaderNotSeekableError, SeekableReader,
 };
-use alloc::{borrow::ToOwned, boxed::Box, sync::Arc, vec, vec::Vec};
+use alloc::{
+    borrow::{Cow, ToOwned},
+    boxed::Box,
+    sync::Arc,
+    vec,
+    vec::Vec,
+};
 use bevy_platform::{
     collections::HashMap,
     sync::{PoisonError, RwLock},
@@ -11,7 +17,6 @@ use core::{pin::Pin, task::Poll};
 use futures_io::{AsyncRead, AsyncWrite};
 use futures_lite::Stream;
 use std::{
-    borrow::Cow,
     io::{Error, ErrorKind, SeekFrom},
     path::{Path, PathBuf},
 };

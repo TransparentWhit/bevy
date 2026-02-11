@@ -9,17 +9,17 @@ use async_io::Timer;
 use async_lock::{Semaphore, SemaphoreGuard};
 use futures_lite::StreamExt;
 
-use alloc::{borrow::ToOwned, boxed::Box};
+use alloc::{
+    borrow::{Cow, ToOwned},
+    boxed::Box,
+};
 #[cfg(target_os = "windows")]
 use core::marker::PhantomData;
 #[cfg(not(target_os = "windows"))]
 use core::time::Duration;
 #[cfg(not(target_os = "windows"))]
 use futures_util::{future, pin_mut};
-use std::{
-    borrow::Cow,
-    path::{Path, PathBuf},
-};
+use std::path::{Path, PathBuf};
 
 use super::{FileAssetReader, FileAssetWriter};
 

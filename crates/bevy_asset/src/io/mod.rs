@@ -25,7 +25,7 @@ mod source;
 pub use futures_lite::AsyncWriteExt;
 pub use source::*;
 
-use alloc::{boxed::Box, sync::Arc, vec::Vec};
+use alloc::{borrow::Cow, boxed::Box, sync::Arc, vec::Vec};
 use bevy_tasks::{BoxedFuture, ConditionalSendFuture};
 use core::{
     mem::size_of,
@@ -35,7 +35,6 @@ use core::{
 use futures_io::{AsyncRead, AsyncSeek, AsyncWrite};
 use futures_lite::Stream;
 use std::{
-    borrow::Cow,
     io::SeekFrom,
     path::{Path, PathBuf},
 };
@@ -197,10 +196,11 @@ pub trait AssetReader: Send + Sync + 'static {
     /// The preferred style for implementing this method is an `async fn` returning an opaque type.
     ///
     /// ```no_run
-    /// # use std::path::Path;
+    /// # use std::{borrow::Cow, path::{Path, PathBuf}};
     /// # use bevy_asset::{prelude::*, io::{AssetReader, PathStream, Reader, AssetReaderError}};
     /// # struct MyReader;
     /// impl AssetReader for MyReader {
+    ///     # fn root_path(&self) -> Cow<'_, PathBuf> { unimplemented!() }
     ///     async fn read<'a>(&'a self, path: &'a Path) -> Result<impl Reader + 'a, AssetReaderError> {
     ///         // ...
     ///         # let val: Box<dyn Reader> = unimplemented!(); Ok(val)

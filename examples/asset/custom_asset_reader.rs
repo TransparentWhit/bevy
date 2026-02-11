@@ -9,7 +9,10 @@ use bevy::{
     },
     prelude::*,
 };
-use std::{borrow::Cow, path::{Path, PathBuf}};
+use std::{
+    borrow::Cow,
+    path::{Path, PathBuf},
+};
 
 /// A custom asset reader implementation that wraps a given asset reader implementation
 struct CustomAssetReader(Box<dyn ErasedAssetReader>);

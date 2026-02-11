@@ -6,14 +6,16 @@ use crate::{
     processor::{ProcessStatus, ProcessingState},
     AssetPath,
 };
-use alloc::{borrow::ToOwned, boxed::Box, sync::Arc, vec::Vec};
+use alloc::{
+    borrow::{Cow, ToOwned},
+    boxed::Box,
+    sync::Arc,
+    vec::Vec,
+};
 use async_lock::RwLockReadGuardArc;
 use core::{pin::Pin, task::Poll};
 use futures_io::AsyncRead;
-use std::{
-    borrow::Cow,
-    path::{Path, PathBuf},
-};
+use std::path::{Path, PathBuf};
 use tracing::trace;
 
 use super::ErasedAssetReader;

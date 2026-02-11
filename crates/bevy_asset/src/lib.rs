@@ -718,6 +718,7 @@ mod tests {
         UnapprovedPathMode, UntypedHandle, WriteDefaultMetaError,
     };
     use alloc::{
+        borrow::Cow,
         boxed::Box,
         format,
         string::{String, ToString},
@@ -741,10 +742,7 @@ mod tests {
     use core::{any::TypeId, time::Duration};
     use futures_lite::AsyncReadExt;
     use serde::{Deserialize, Serialize};
-    use std::{
-        borrow::Cow,
-        path::{Path, PathBuf},
-    };
+    use std::path::{Path, PathBuf};
     use thiserror::Error;
 
     #[derive(Asset, TypePath, Debug, Default)]

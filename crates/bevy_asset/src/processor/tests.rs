@@ -1,4 +1,5 @@
 use alloc::{
+    borrow::Cow,
     boxed::Box,
     collections::BTreeMap,
     string::{String, ToString},
@@ -16,10 +17,7 @@ use core::marker::PhantomData;
 use futures_lite::AsyncWriteExt;
 use ron::ser::PrettyConfig;
 use serde::{Deserialize, Serialize};
-use std::{
-    borrow::Cow,
-    path::{Path, PathBuf},
-};
+use std::path::{Path, PathBuf};
 
 use bevy_app::{App, TaskPoolPlugin};
 use bevy_ecs::error::BevyError;

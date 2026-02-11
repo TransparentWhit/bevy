@@ -6,10 +6,13 @@ use crate::io::{
     PathStream, Reader, ReaderNotSeekableError, SeekableReader, Writer,
 };
 
-use alloc::{borrow::ToOwned, boxed::Box, vec::Vec};
+use alloc::{
+    borrow::{Cow, ToOwned},
+    boxed::Box,
+    vec::Vec,
+};
 use core::{pin::Pin, task::Poll};
 use std::{
-    borrow::Cow,
     fs::{read_dir, File},
     io::{Read, Seek, SeekFrom, Write},
     path::{Path, PathBuf},
